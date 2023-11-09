@@ -62,7 +62,7 @@ function applyCircleMask(inputPath, outputPath, chatId) {
 			.on('progress', async (progress) => {
 				const time = parseInt(progress.timemark.replace(/:/g, ''))
 				const percent = (time / totalTime) * 100
-				await bot.sendMessage(chatId, `${percent}%`)
+				await bot.sendMessage(chatId, `${Math.round(percent)}%`)
 			})
 			.on('end', resolve)
 			.on('error', reject)
