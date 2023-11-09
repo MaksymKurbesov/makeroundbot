@@ -2,11 +2,13 @@ const path = require('path');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
 const TelegramBot = require('node-telegram-bot-api');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const axios = require('axios');
-
 const TOKEN = '6795077836:AAHbCE7ZkXqY8ib2f_ppJaaL5lvs53wYTh4';
 const bot = new TelegramBot(TOKEN, {polling: true});
 
+
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 bot.on('message', async (msg) => {
 	if (msg.video) {
