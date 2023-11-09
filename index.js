@@ -34,6 +34,8 @@ bot.on('message', async (msg) => {
 });
 
 function applyCircleMask(inputPath, outputPath, chatId) {
+	let totalTime;
+
 	return new Promise((resolve, reject) => {
 		ffmpeg(inputPath)
 			.videoFilters([
@@ -53,8 +55,14 @@ function applyCircleMask(inputPath, outputPath, chatId) {
 			.on('start', async () => {
 				await bot.sendMessage(chatId, `Обработка видео начата 🟢`)
 			})
+			.on('codecData', data => {
+				// HERE YOU GET THE TOTAL TIME
+				totalTime = parseInt(data.duration.replace(/:/g, ''))
+			})
 			.on('progress', async (progress) => {
-				await bot.sendMessage(chatId, `${Math.round(progress.percent)}%`)
+				const time = parseInt(progress.timemark.replace(/:/g, ''))
+				const percent = (time / totalTime) * 100
+				await bot.sendMessage(chatId, `${percent}%`)
 			})
 			.on('end', resolve)
 			.on('error', reject)
